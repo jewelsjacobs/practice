@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var locations = {};
+
+//console.log(process.argv[2]);
+
+fs.readFile(process.argv[2], function (err, data) {
+  if (err) throw err;
+  var input = data.toString('ascii');
+ 
+  
+  input = input.split('\n');
+  //console.log(input.length)
+
+  for (index = 0; index < input.length-1; index ++) {
+    //console.log("row " + index, input[index]);
+    if (input[index].indexOf('#') > -1){
+      locations[index]=input[index].indexOf('#');
+      //console.log("locations", locations);
+      //console.log("# found at ", input[index].indexOf('#'));
+      //console.log("locationsArray", locationsArray);
+    }
+}
+console.log(locations)
+});
+
