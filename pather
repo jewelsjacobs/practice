@@ -1,27 +1,61 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-var locations = {};
+var coordinates = new Object();
+var c;
 
-//console.log(process.argv[2]);
-
-fs.readFile(process.argv[2], function (err, data) {
+fs.readFile(process.argv[2], function (err, data){
   if (err) throw err;
-  var input = data.toString('ascii');
- 
+  var input = data.toString('ascii').split('\n');
+  var i = 0;
   
-  input = input.split('\n');
-  //console.log(input.length)
-
-  for (index = 0; index < input.length-1; index ++) {
-    //console.log("row " + index, input[index]);
-    if (input[index].indexOf('#') > -1){
-      locations[index]=input[index].indexOf('#');
-      //console.log("locations", locations);
-      //console.log("# found at ", input[index].indexOf('#'));
-      //console.log("locationsArray", locationsArray);
+  for (var r = 0; r < input.length; r ++) {
+    input[r] = input[r].split('');
+    for (var c = 0; c <= input[r].length; c++){
+      if (input[r][c]=='#'){
+        coordinates[i] = {"row": r, "col": c };
+        i++
+      }
     }
-}
-console.log(locations)
+  }
+
+  createPath(coordinates, input);
+  
+  for(var x = 0; x<input.length-1; x++){
+    console.log(input[x].join(''));
+    fs.appendFile('output.txt', input[x].join('')+ "\n", function (err) {
+      if (err) throw err;
+    });
+  }
 });
+
+
+function createPath(coordinates, input){
+  cLength = Object.keys(coordinates).length
+  for(var index = 0; index < cLength - 1; index ++){
+    startRow = coordinates[index].row;
+    endRow = coordinates[index + 1].row;
+    if (startRow > endRow){
+      tempRow = startRow;
+      startRow = endRow;
+      endRow = tempRow;
+    }
+    for(c = startRow+1; c <= endRow; c++){
+      input[c][coordinates[index].col] = '*'
+    }
+
+    startCol = coordinates[index].col;
+    endCol = coordinates[index + 1].col;
+    if (startCol > endCol){
+      tempCol = startCol;
+      startCol = endCol;
+      endCol = tempCol;
+    }
+
+    var pathRow = coordinates[index+1].row
+      for(r = startCol+1; r < endCol; r++){
+      input[pathRow][r] = '*'
+    }
+  }
+}
 
