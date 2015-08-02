@@ -22,7 +22,6 @@ fs.readFile(process.argv[2], function (err, data){
   createPath(coordinates, input);
   
   for(var x = 0; x<input.length-1; x++){
-    console.log(input[x].join(''));
     fs.appendFile('output.txt', input[x].join('')+ "\n", function (err) {
       if (err) throw err;
     });
