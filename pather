@@ -4,6 +4,8 @@ var fs = require('fs');
 var coordinates = new Object();
 var c;
 
+
+
 fs.readFile(process.argv[2], function (err, data){
   if (err) throw err;
   var input = data.toString('ascii').split('\n');
@@ -21,11 +23,16 @@ fs.readFile(process.argv[2], function (err, data){
 
   createPath(coordinates, input);
   
+ var tempBuffer=[];
+  
   for(var x = 0; x<input.length-1; x++){
-    fs.appendFile('output.txt', input[x].join('')+ "\n", function (err) {
+    tempBuffer += input[x].join('') + "\n"
+  }
+
+  fs.writeFile(process.argv[3], tempBuffer, function (err) {
       if (err) throw err;
     });
-  }
+
 });
 
 
