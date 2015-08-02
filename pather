@@ -2,14 +2,12 @@
 
 var fs = require('fs');
 var coordinates = new Object();
-var c;
-
-
 
 fs.readFile(process.argv[2], function (err, data){
   if (err) throw err;
   var input = data.toString('ascii').split('\n');
   var i = 0;
+  var c;
   
   for (var r = 0; r < input.length; r ++) {
     input[r] = input[r].split('');
@@ -32,9 +30,7 @@ fs.readFile(process.argv[2], function (err, data){
   fs.writeFile(process.argv[3], tempBuffer, function (err) {
       if (err) throw err;
     });
-
-});
-
+}); 
 
 function createPath(coordinates, input){
   cLength = Object.keys(coordinates).length
