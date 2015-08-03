@@ -44,7 +44,7 @@ function createPath(coordinates, input){
   cLength = Object.keys(coordinates).length
   for(var index = 0; index < cLength - 1; index ++){
     
-    // Determine the starting and ending point for the row
+    // Determine the starting and ending point for the column
     startRow = coordinates[index].row;
     endRow = coordinates[index + 1].row;
     
@@ -59,7 +59,7 @@ function createPath(coordinates, input){
       input[c][coordinates[index].col] = '*'
     }
 
-    // Determine the starting and ending point for the column
+    // Determine the starting and ending point for the row
     startCol = coordinates[index].col;
     endCol = coordinates[index + 1].col;
     
