@@ -54,7 +54,7 @@ function createPath(coordinates, input){
       endRow = tempRow;
     }
     
-    // Draw the row
+    // Draw the column
     for(c = startRow+1; c <= endRow; c++){
       input[c][coordinates[index].col] = '*'
     }
@@ -69,7 +69,7 @@ function createPath(coordinates, input){
       endCol = tempCol;
     }
 
-    // Draw the column
+    // Draw the row
     var pathRow = coordinates[index+1].row
       for(r = startCol+1; r < endCol; r++){
       input[pathRow][r] = '*'
