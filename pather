@@ -1,79 +1,78 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-var coordinates = new Object();
+var coordinates = {};
 
 // Read in a file and output the results to another file
-fs.readFile(process.argv[2], function (err, data){
-  if (err) throw err;
-  var input = data.toString('ascii').split('\n');
-  var i = 0;
-  var c;
-  
-  // Add xy location of each # to the coordinates object
-  // ex, coordinates = { '0': { row: 2, col: 4 }, '1': { row: 2, col: 18 }}
-  for (var r = 0; r < input.length; r ++) {
-    input[r] = input[r].split('');
-    for (var c = 0; c <= input[r].length; c++){
-      if (input[r][c]=='#'){
-        coordinates[i] = {"row": r, "col": c };
-        i++
-      }
+fs.readFile(process.argv[2], function (err, data) {
+    if (err) throw err;
+    var input = data.toString('ascii').split('\n');
+    var i = 0;
+
+    // Add xy location of each # to the coordinates object
+    // ex, coordinates = { '0': { row: 2, col: 4 }, '1': { row: 2, col: 18 }}
+    for (var r = 0; r < input.length; r++) {
+        input[r] = input[r].split('');
+        for (var c = 0; c <= input[r].length; c++) {
+            if (input[r][c] == '#') {
+                coordinates[i] = {"row": r, "col": c};
+                i++
+            }
+        }
     }
-  }
 
-  createPath(coordinates, input);
-  
-  var tempBuffer=[];
-  
-  // Format the data in tempBuffer in preparation for outputting
-  // it to a file
-  for(var x = 0; x<input.length-1; x++){
-    tempBuffer += input[x].join('') + "\n"
-  }
+    createPath(coordinates, input);
 
-  // Output tempBuffer to file
-  fs.writeFile(process.argv[3], tempBuffer, function (err) {
-      if (err) throw err;
+    var tempBuffer = [];
+
+    // Format the data in tempBuffer in preparation for outputting
+    // it to a file
+    for (var x = 0; x < input.length - 1; x++) {
+        tempBuffer += input[x].join('') + "\n"
+    }
+
+    // Output tempBuffer to file
+    fs.writeFile(process.argv[3], tempBuffer, function (err) {
+        if (err) throw err;
     });
-}); 
+});
 
 // Based on the coordinates rewrite the input data with a path
 // between # symbols
-function createPath(coordinates, input){
-  cLength = Object.keys(coordinates).length
-  for(var index = 0; index < cLength - 1; index ++){
-    
-    // Determine the starting and ending point for the column
-    startRow = coordinates[index].row;
-    endRow = coordinates[index + 1].row;
-    
-    if (startRow > endRow){
-      tempRow = startRow;
-      startRow = endRow;
-      endRow = tempRow;
-    }
-    
-    // Draw the column
-    for(c = startRow+1; c <= endRow; c++){
-      input[c][coordinates[index].col] = '*'
-    }
+function createPath(coordinates, input) {
+    var cLength = Object.keys(coordinates).length;
+    for (var index = 0; index < cLength - 1; index++) {
 
-    // Determine the starting and ending point for the row
-    startCol = coordinates[index].col;
-    endCol = coordinates[index + 1].col;
-    
-    if (startCol > endCol){
-      tempCol = startCol;
-      startCol = endCol;
-      endCol = tempCol;
-    }
+        // Determine the starting and ending point for the column
+        var startRow = coordinates[index].row;
+        var endRow = coordinates[index + 1].row;
 
-    // Draw the row
-    var pathRow = coordinates[index+1].row
-      for(r = startCol+1; r < endCol; r++){
-      input[pathRow][r] = '*'
+        if (startRow > endRow) {
+            var tempRow = startRow;
+            startRow = endRow;
+            endRow = tempRow;
+        }
+
+        // Draw the column
+        for (var c = startRow + 1; c <= endRow; c++) {
+            input[c][coordinates[index].col] = '*'
+        }
+
+        // Determine the starting and ending point for the row
+        var startCol = coordinates[index].col;
+        var endCol = coordinates[index + 1].col;
+
+        if (startCol > endCol) {
+            var tempCol = startCol;
+            startCol = endCol;
+            endCol = tempCol;
+        }
+
+        // Draw the row
+        var pathRow = coordinates[index + 1].row;
+        for (var r = startCol + 1; r < endCol; r++) {
+            input[pathRow][r] = '*'
+        }
     }
-  }
 }
 
